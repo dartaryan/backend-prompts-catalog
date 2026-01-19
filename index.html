@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Demo Catalog - Choose Your Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0A0A0A 0%, #1a1a2e 100%);
+            color: white;
+            padding: 64px 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #fff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #888;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section {
+            padding: 48px 24px;
+            transition: all 0.3s ease;
+        }
+
+        .section:nth-child(odd) {
+            background-color: #0A0A0A;
+            color: white;
+        }
+
+        .section:nth-child(even) {
+            background-color: #FAFAFA;
+            color: #0A0A0A;
+        }
+
+        .section-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover .section-icon {
+            transform: scale(1.1);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .section-number {
+            font-size: 14px;
+            opacity: 0.6;
+            font-weight: 500;
+        }
+
+        .features {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .features li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .features li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .code-block {
+            background-color: #1E1E1E;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .section:nth-child(even) .code-block {
+            border: 1px solid #e0e0e0;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #2d2d2d;
+            border-bottom: 1px solid #333;
+        }
+
+        .code-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #555;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Heebo', sans-serif;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: #333;
+            border-color: #777;
+        }
+
+        .copy-btn.copied {
+            background: #22C55E;
+            border-color: #22C55E;
+        }
+
+        .code-content {
+            padding: 16px;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        /* Accent Colors */
+        .section-1 .section-icon { background: rgba(239, 68, 68, 0.15); color: #EF4444; }
+        .section-1 .features li::before { background: #EF4444; }
+
+        .section-2 .section-icon { background: rgba(59, 130, 246, 0.15); color: #3B82F6; }
+        .section-2 .features li::before { background: #3B82F6; }
+
+        .section-3 .section-icon { background: rgba(249, 115, 22, 0.15); color: #F97316; }
+        .section-3 .features li::before { background: #F97316; }
+
+        .section-4 .section-icon { background: rgba(34, 197, 94, 0.15); color: #22C55E; }
+        .section-4 .features li::before { background: #22C55E; }
+
+        .section-5 .section-icon { background: rgba(139, 92, 246, 0.15); color: #8B5CF6; }
+        .section-5 .features li::before { background: #8B5CF6; }
+
+        .section-6 .section-icon { background: rgba(236, 72, 153, 0.15); color: #EC4899; }
+        .section-6 .features li::before { background: #EC4899; }
+
+        .section-7 .section-icon { background: rgba(20, 184, 166, 0.15); color: #14B8A6; }
+        .section-7 .features li::before { background: #14B8A6; }
+
+        .section-8 .section-icon { background: rgba(245, 158, 11, 0.15); color: #F59E0B; }
+        .section-8 .features li::before { background: #F59E0B; }
+
+        .section-9 .section-icon { background: rgba(99, 102, 241, 0.15); color: #6366F1; }
+        .section-9 .features li::before { background: #6366F1; }
+
+        .section-10 .section-icon { background: rgba(6, 182, 212, 0.15); color: #06B6D4; }
+        .section-10 .features li::before { background: #06B6D4; }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 48px;
+            height: 48px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: #555;
+            transform: translateY(-4px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .header p {
+                font-size: 16px;
+            }
+
+            .section {
+                padding: 32px 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .section-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .code-content pre {
+                font-size: 12px;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 44px;
+                height: 44px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Backend Demo Catalog</h1>
+        <p>Choose your demo and start building with Cursor. Each section contains a ready-to-use prompt that generates a complete HTML page.</p>
+    </header>
+
+    <!-- Section 1: Server Monitoring Dashboard -->
+    <section class="section section-1">
+        <div class="section-content">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i data-lucide="activity" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="section-number">Demo 01</div>
+                    <h2 class="section-title">Server Monitoring Dashboard</h2>
+                </div>
+            </div>
+            <ul class="features">
+                <li>Real-time CPU, Memory, Disk usage gauges</li>
+                <li>Active connections counter</li>
+                <li>Request latency chart (line graph)</li>
+                <li>Health status indicators (green/yellow/red circles)</li>
+            </ul>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">Prompt</span>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i data-lucide="copy" width="14" height="14"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>Create a server monitoring dashboard HTML page with:
+- Header with server name and last updated timestamp
+- 3 circular gauge charts showing CPU (73%), Memory (58%), Disk (45%)
+- Active connections card showing "1,247 active"
+- Line chart showing response latency over last hour
+- Health status section with 4 services (API, Database, Cache, Queue) showing green/yellow/red indicators
+- Linear-inspired design: dark theme (#0A0A0A background), clean and minimal
+- Accent color: #EF4444 (Red) for highlights, buttons, and active states
+- Use Chart.js for charts
+- Subtle hover animations and transitions
+- Font: Heebo (Google Fonts)</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: API Documentation Page -->
+    <section class="section section-2">
+        <div class="section-content">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i data-lucide="file-text" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="section-number">Demo 02</div>
+                    <h2 class="section-title">API Documentation Page</h2>
+                </div>
+            </div>
+            <ul class="features">
+                <li>Sidebar with endpoint categories</li>
+                <li>Endpoint cards with method badges (GET/POST/PUT/DELETE)</li>
+                <li>Request/Response JSON examples</li>
+                <li>Parameter tables</li>
+            </ul>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">Prompt</span>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i data-lucide="copy" width="14" height="14"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>Create an API documentation page HTML with:
+- Left sidebar with categories: Users, Products, Orders, Auth
+- Main content showing endpoints list
+- Each endpoint has: method badge (colored: GET=green, POST=blue, PUT=orange, DELETE=red), path, description
+- Expandable sections showing request body and response examples in JSON
+- Parameter table with name, type, required, description columns
+- Linear-inspired design: light theme (#FAFAFA background), clean and minimal
+- Accent color: #3B82F6 (Blue) for links, active states, and highlights
+- Subtle borders and shadows
+- Font: Heebo (Google Fonts)
+- Include 8 sample endpoints</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Error Tracking Dashboard -->
+    <section class="section section-3">
+        <div class="section-content">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i data-lucide="alert-triangle" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="section-number">Demo 03</div>
+                    <h2 class="section-title">Error Tracking Dashboard</h2>
+                </div>
+            </div>
+            <ul class="features">
+                <li>Error count summary cards</li>
+                <li>Error list with stack traces</li>
+                <li>Frequency chart over time</li>
+                <li>Status filters (Open/Resolved/Ignored)</li>
+            </ul>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">Prompt</span>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i data-lucide="copy" width="14" height="14"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>Create an error tracking dashboard HTML page with:
+- Top stats row: Total Errors (247), Unresolved (23), Affected Users (1.2K), Error Rate (0.3%)
+- Filter tabs: All, Open, Resolved, Ignored
+- Error list showing: error type, message preview, occurrence count, first/last seen
+- Each error expandable to show full stack trace
+- Bar chart showing errors per hour (last 24h)
+- Linear-inspired design: dark theme (#0A0A0A background), clean and minimal
+- Accent color: #F97316 (Orange) for error highlights, buttons, and active states
+- Subtle hover animations
+- Font: Heebo (Google Fonts)
+- Use Chart.js for the chart</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: CI/CD Pipeline Status Board -->
+    <section class="section section-4">
+        <div class="section-content">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i data-lucide="git-branch" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="section-number">Demo 04</div>
+                    <h2 class="section-title">CI/CD Pipeline Status Board</h2>
+                </div>
+            </div>
+            <ul class="features">
+                <li>Visual pipeline stages (Build → Test → Deploy)</li>
+                <li>Success/Failure indicators</li>
+                <li>Duration times</li>
+                <li>Recent deployments log</li>
+            </ul>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">Prompt</span>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i data-lucide="copy" width="14" height="14"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>Create a CI/CD pipeline status board HTML page with:
+- Pipeline visualization showing 4 stages: Build, Test, Security Scan, Deploy
+- Each stage shows: status icon (check/x/spinner), duration, timestamp
+- Color coding: success=green, failed=red, running=blue with pulse animation
+- Recent deployments table: version, environment, status, deployed by, timestamp
+- 3 environment cards: Development (green), Staging (yellow), Production (blue)
+- Linear-inspired design: light theme (#FAFAFA background), clean and minimal
+- Accent color: #22C55E (Green) for success states, buttons, and highlights
+- Subtle shadows and transitions
+- Font: Heebo (Google Fonts)</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Database Schema Viewer -->
+    <section class="section section-5">
+        <div class="section-content">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i data-lucide="database" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="section-number">Demo 05</div>
+                    <h2 class="section-title">Database Schema Viewer</h2>
+                </div>
+            </div>
+            <ul class="features">
+                <li>Table cards with columns list</li>
+                <li>Data type badges</li>
+                <li>Primary/Foreign key indicators</li>
+                <li>Relationship lines between tables</li>
+            </ul>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">Prompt</span>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i data-lucide="copy" width="14" height="14"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>Create a database schema viewer HTML page with:
+- Grid of table cards (Users, Orders, Products, Categories, OrderItems)
+- Each card shows: table name header, columns list with data type badges
+- Column info: name, type (varchar, int, datetime, etc.), nullable indicator
+- Key icons: golden key for PK, silver link for FK
+- Visual relationship indicators between tables (colored dots matching related tables)
+- Linear-inspired design: dark theme (#0A0A0A background), clean and minimal
+- Accent color: #8B5CF6 (Purple) for headers, key indicators, and highlights
+- Cards with subtle borders, hover animations
+- Font: Heebo (Google Fonts)
+- Include 5 interconnected tables</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Code Review Interface -->
+    <section class="section section-6">
+        <div class="section-content">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i data-lucide="git-pull-request" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="section-number">Demo 06</div>
+                    <h2 class="section-title">Code Review Interface</h2>
+                </div>
+            </div>
+            <ul class="features">
+                <li>File diff view (before/after)</li>
+                <li>Line-by-line comments</li>
+                <li>Approval status badges</li>
+                <li>Reviewer avatars</li>
+            </ul>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">Prompt</span>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i data-lucide="copy" width="14" height="14"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>Create a code review interface HTML page with:
+- PR header: title, branch names (feature → main), status badge (Open)
+- File tree sidebar showing changed files with +/- line counts
+- Diff viewer with line numbers, syntax highlighting (green for additions, red for deletions)
+- Inline comment threads with user avatars, timestamps, reply buttons
+- Approval section: 2 approved (green checks), 1 pending (yellow clock)
+- Action buttons: Approve, Request Changes, Comment
+- Linear-inspired design: light theme (#FAFAFA background), clean and minimal
+- Accent color: #EC4899 (Pink) for buttons, active states, and highlights
+- Subtle borders and hover transitions
+- Font: Heebo (Google Fonts), code in monospace</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Feature Flags Dashboard -->
+    <section class="section section-7">
+        <div class="section-content">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i data-lucide="toggle-right" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="section-number">Demo 07</div>
+                    <h2 class="section-title">Feature Flags Dashboard</h2>
+                </div>
+            </div>
+            <ul class="features">
+                <li>Feature toggle switches</li>
+                <li>Environment selector</li>
+                <li>Rollout percentage sliders</li>
+                <li>Audit log of changes</li>
+            </ul>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">Prompt</span>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i data-lucide="copy" width="14" height="14"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>Create a feature flags dashboard HTML page with:
+- Environment tabs: Development, Staging, Production
+- Feature list with toggle switches (on/off with smooth animation)
+- Each feature shows: name, description, rollout percentage slider (0-100%)
+- Status indicators: enabled users count, last modified timestamp
+- Audit log section showing recent changes: who, what, when
+- Include 6 sample features: Dark Mode, New Checkout, Beta API, Analytics v2, etc.
+- Linear-inspired design: dark theme (#0A0A0A background), clean and minimal
+- Accent color: #14B8A6 (Teal) for enabled toggles, buttons, and highlights
+- Smooth animations on toggle switches
+- Font: Heebo (Google Fonts)</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: Performance Metrics Dashboard -->
+    <section class="section section-8">
+        <div class="section-content">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i data-lucide="gauge" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="section-number">Demo 08</div>
+                    <h2 class="section-title">Performance Metrics Dashboard</h2>
+                </div>
+            </div>
+            <ul class="features">
+                <li>Response time percentiles (P50, P95, P99)</li>
+                <li>Database query times</li>
+                <li>Cache hit/miss ratio</li>
+                <li>Throughput graph</li>
+            </ul>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">Prompt</span>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i data-lucide="copy" width="14" height="14"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>Create a performance metrics dashboard HTML page with:
+- Top row: 4 metric cards - P50 (45ms), P95 (120ms), P99 (340ms), Throughput (1.2K req/s)
+- Response time line chart showing trends over last 24 hours
+- Database section: average query time, slowest queries table
+- Cache stats: hit ratio donut chart (94% hit, 6% miss)
+- Apdex score gauge (0.94 - Excellent)
+- Linear-inspired design: light theme (#FAFAFA background), clean and minimal
+- Accent color: #F59E0B (Amber) for charts, highlights, and metric indicators
+- Subtle shadows and hover transitions
+- Font: Heebo (Google Fonts)
+- Use Chart.js for charts</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: Database Migration Tracker -->
+    <section class="section section-9">
+        <div class="section-content">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i data-lucide="layers" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="section-number">Demo 09</div>
+                    <h2 class="section-title">Database Migration Tracker</h2>
+                </div>
+            </div>
+            <ul class="features">
+                <li>Applied migrations list with timestamps</li>
+                <li>Pending migrations highlighted</li>
+                <li>Migration script preview</li>
+                <li>Rollback indicators</li>
+            </ul>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">Prompt</span>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i data-lucide="copy" width="14" height="14"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>Create a database migration tracker HTML page with:
+- Stats row: Total (47), Applied (45), Pending (2)
+- Migration list showing: version number, name, status badge, applied date, duration
+- Status colors: applied=green, pending=yellow, failed=red
+- Expandable migration details showing SQL script preview
+- Each migration has: Up script, Down script tabs
+- Pending migrations highlighted with accent color background
+- Action buttons: Apply Next, Apply All, Rollback Last
+- Linear-inspired design: dark theme (#0A0A0A background), clean and minimal
+- Accent color: #6366F1 (Indigo) for buttons, active tabs, and highlights
+- Smooth expand/collapse animations
+- Font: Heebo (Google Fonts), SQL in monospace</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 10: Microservices Architecture Map -->
+    <section class="section section-10">
+        <div class="section-content">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i data-lucide="network" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="section-number">Demo 10</div>
+                    <h2 class="section-title">Microservices Architecture Map</h2>
+                </div>
+            </div>
+            <ul class="features">
+                <li>Service boxes with names and status</li>
+                <li>Connection arrows showing dependencies</li>
+                <li>Health indicators per service</li>
+                <li>Request flow visualization</li>
+            </ul>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">Prompt</span>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i data-lucide="copy" width="14" height="14"></i>
+                        Copy
+                    </button>
+                </div>
+                <div class="code-content">
+                    <pre>Create a microservices architecture map HTML page with:
+- Visual diagram with 6 services: API Gateway, User Service, Order Service, Product Service, Payment Service, Notification Service
+- Each service box shows: name, health status (green dot), instance count
+- Arrows connecting services showing dependencies
+- Click a service to see details: endpoints, dependencies, metrics
+- Legend showing: healthy (green), degraded (yellow), down (red)
+- Request flow animation option (dotted line moving along connections)
+- Linear-inspired design: light theme (#FAFAFA background), clean and minimal
+- Accent color: #06B6D4 (Cyan) for service boxes, connection lines, and highlights
+- Subtle shadows and hover animations
+- Font: Heebo (Google Fonts)
+- Use CSS for layout (no canvas needed)</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i data-lucide="chevron-up" width="24" height="24"></i>
+    </button>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Copy to clipboard function
+        function copyToClipboard(button) {
+            const codeBlock = button.closest('.code-block');
+            const pre = codeBlock.querySelector('pre');
+            const text = pre.textContent;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<i data-lucide="check" width="14" height="14"></i> Copied!';
+                button.classList.add('copied');
+                lucide.createIcons();
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.classList.remove('copied');
+                    lucide.createIcons();
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        // Back to top functionality
+        const backToTopBtn = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
